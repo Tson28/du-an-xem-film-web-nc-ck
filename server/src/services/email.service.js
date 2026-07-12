@@ -37,7 +37,7 @@ function generateTicketEmailHTML(booking) {
     
     <!-- Header -->
     <div style="background:linear-gradient(135deg,#E50914,#8b0000);padding:32px;text-align:center;">
-      <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;">TT <span style="color:rgba(255,255,255,0.7)">CINEMA</span></div>
+      <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;">SUN <span style="color:rgba(255,255,255,0.7)">CINEMA</span></div>
       <div style="color:rgba(255,255,255,0.8);font-size:14px;margin-top:6px;">Xác nhận đặt vé thành công 🎉</div>
     </div>
 
@@ -98,8 +98,8 @@ function generateTicketEmailHTML(booking) {
 
     <!-- Footer -->
     <div style="padding:24px 32px;text-align:center;border-top:1px solid #222;">
-      <p style="color:#555;font-size:12px;margin:0;">Cảm ơn bạn đã chọn TT CINEMA. Chúc bạn xem phim vui vẻ! 🍿</p>
-      <p style="color:#444;font-size:11px;margin-top:8px;">© 2026 TT CINEMA. All rights reserved.</p>
+      <p style="color:#555;font-size:12px;margin:0;">Cảm ơn bạn đã chọn SUN CINEMA. Chúc bạn xem phim vui vẻ! 🍿</p>
+      <p style="color:#444;font-size:11px;margin-top:8px;">© 2026 SUN CINEMA. All rights reserved.</p>
     </div>
   </div>
 </body>
@@ -111,11 +111,11 @@ async function sendBookingConfirmationEmail(booking) {
     if (!user?.email) return; // Không có email thì bỏ qua
 
     const movie = booking.showtimeId?.movieId;
-    const subject = `🎬 TT CINEMA — Đặt vé "${movie?.title || 'Xem phim'}" thành công!`;
+    const subject = `🎬 SUN CINEMA — Đặt vé "${movie?.title || 'Xem phim'}" thành công!`;
 
     try {
         await transporter.sendMail({
-            from: `"TT CINEMA" <${process.env.FROM_EMAIL}>`,
+            from: `"SUN CINEMA" <${process.env.FROM_EMAIL}>`,
             to: user.email,
             subject,
             html: generateTicketEmailHTML(booking),

@@ -82,7 +82,7 @@ class BookingPaymentService {
                 ? `${partnerCode}${bookingId}R${Date.now()}`
                 : `${partnerCode}${bookingId}`;
             const requestId = `${orderId}_${Date.now()}`;
-            const orderInfo = `Dat ve xem phim TT CINEMA - ${booking._id}`;
+            const orderInfo = `Dat ve xem phim SUN CINEMA - ${booking._id}`;
             const redirectUrl = `${CLIENT_URL}/booking/result?bookingId=${booking._id}`;
             const ipnUrl = `${SERVER_URL}/api/payment/momo/callback`;
             const requestType = 'payWithMethod';
@@ -94,8 +94,8 @@ class BookingPaymentService {
 
             const requestBody = JSON.stringify({
                 partnerCode,
-                partnerName: 'TT CINEMA',
-                storeId: 'TTCinemaStore',
+                partnerName: 'SUN CINEMA',
+                storeId: 'SunCinemaStore',
                 requestId,
                 amount,
                 orderId,
@@ -165,7 +165,7 @@ class BookingPaymentService {
             vnp_Amount: Math.round(bookingData.totalPrice),
             vnp_IpAddr: ipAddr || '127.0.0.1',
             vnp_TxnRef: `TT${booking._id}_${generatePayID()}`,
-            vnp_OrderInfo: `Dat ve xem phim TT CINEMA - ${booking._id}`,
+            vnp_OrderInfo: `Dat ve xem phim SUN CINEMA - ${booking._id}`,
             vnp_OrderType: ProductCode.Other,
             vnp_ReturnUrl: `${SERVER_URL}/api/payment/vnpay/callback`,
             vnp_Locale: VnpLocale.VN,

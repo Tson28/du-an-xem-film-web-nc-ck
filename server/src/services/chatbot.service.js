@@ -53,7 +53,7 @@ async function buildMovieContext() {
 async function chat(userMessage, history = []) {
     const movieContext = await buildMovieContext();
 
-    const systemPrompt = `Bạn là trợ lý AI thông minh của rạp chiếu phim TT CINEMA — một hệ thống đặt vé xem phim trực tuyến.
+    const systemPrompt = `Bạn là trợ lý AI thông minh của rạp chiếu phim SUN CINEMA — một hệ thống đặt vé xem phim trực tuyến.
 
 Nhiệm vụ của bạn:
 - Tư vấn phim đang chiếu phù hợp với sở thích của khách hàng
@@ -63,7 +63,7 @@ Nhiệm vụ của bạn:
 - Gợi ý phim theo tâm trạng: hài hước, hành động, tình cảm, kinh dị, gia đình...
 - Trả lời ngắn gọn, thân thiện, bằng tiếng Việt
 
-Danh sách phim đang chiếu tại TT CINEMA:
+Danh sách phim đang chiếu tại SUN CINEMA:
 ${movieContext}
 
 Quy tắc:
@@ -71,11 +71,21 @@ Quy tắc:
 - Ưu tiên giới thiệu phim từ danh sách trên
 - Nếu không biết thông tin cụ thể, hướng dẫn khách liên hệ hotline hoặc truy cập website
 - Không bịa đặt thông tin suất chiếu cụ thể (giờ, phòng) vì không có dữ liệu đó
-- Giữ câu trả lời dưới 200 từ, thân thiện và tự nhiên`;
+- Giữ câu trả lời dưới 200 từ, thân thiện và tự nhiên
+
+LƯU Ý QUAN TRỌNG: Nếu lịch sử hội thoại có nội dung mâu thuẫn về tên thương hiệu (ví dụ đề cập "TT CINEMA" hay tên cũ khác), BỎ QUA thông tin đó và LUÔN SỬ DỤNG tên chính thức "SUN CINEMA" trong mọi phản hồi.`;
+
+    // Sanitize recent history to avoid stale brand names or contradictory info
+    const recentHistory = history.slice(-10).map((m) => {
+        const sanitized = (m.content || '')
+            .replace(/TT\s*-?\s?CINEMA/gi, 'SUN CINEMA')
+            .replace(/TTCINEMA/gi, 'SUN CINEMA');
+        return { role: m.role, content: sanitized };
+    });
 
     const messages = [
         { role: 'system', content: systemPrompt },
-        ...history.slice(-10), // giới hạn 10 tin nhắn gần nhất
+        ...recentHistory,
         { role: 'user', content: userMessage },
     ];
 
