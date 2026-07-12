@@ -13,10 +13,10 @@ const CONNECT_URL = process.env.CONNECT_DB || 'mongodb://127.0.0.1:27017/movie2'
 
 // Danh sách các rạp chiếu
 const cinemasData = [
-    { name: 'TT Cinema Hùng Vương', address: 'Tầng 5, Hùng Vương Plaza, 126 Hùng Vương, Q.5', city: 'Hồ Chí Minh', hotline: '1900 6017' },
-    { name: 'TT Cinema Landmark 81', address: 'Tầng B1, Vincom Landmark 81, 772 Điện Biên Phủ, Bình Thạnh', city: 'Hồ Chí Minh', hotline: '1900 6018' },
-    { name: 'TT Cinema Aeon Mall Long Biên', address: 'Tầng 3, Aeon Mall Long Biên, 27 Cổ Linh, Q. Long Biên', city: 'Hà Nội', hotline: '1900 6019' },
-    { name: 'TT Cinema Trần Duy Hưng', address: 'Tầng 5, Vincom Trần Duy Hưng, Cầu Giấy', city: 'Hà Nội', hotline: '1900 6020' }
+    { name: 'Sun Cinema Hùng Vương', address: 'Tầng 5, Hùng Vương Plaza, 126 Hùng Vương, Q.5', city: 'Hồ Chí Minh', hotline: '1900 6017' },
+    { name: 'Sun Cinema Landmark 81', address: 'Tầng B1, Vincom Landmark 81, 772 Điện Biên Phủ, Bình Thạnh', city: 'Hồ Chí Minh', hotline: '1900 6018' },
+    { name: 'Sun Cinema Aeon Mall Long Biên', address: 'Tầng 3, Aeon Mall Long Biên, 27 Cổ Linh, Q. Long Biên', city: 'Hà Nội', hotline: '1900 6019' },
+    { name: 'Sun Cinema Trần Duy Hưng', address: 'Tầng 5, Vincom Trần Duy Hưng, Cầu Giấy', city: 'Hà Nội', hotline: '1900 6020' }
 ];
 
 // Sinh danh sách ghế tự động cho phòng chiếu (10 hàng x 12 ghế = 120 ghế)
