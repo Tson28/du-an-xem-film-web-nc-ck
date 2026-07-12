@@ -46,7 +46,7 @@ export default function CinemasPage() {
                         <div>
                             <h1 className="text-3xl font-black text-white">Hệ thống rạp</h1>
                             <p className="text-sm text-gray-500 mt-1">
-                                Trải nghiệm điện ảnh đỉnh cao tại hệ thống TT CINEMA toàn quốc
+                                Trải nghiệm điện ảnh đỉnh cao tại hệ thống SUN CINEMA toàn quốc
                             </p>
                         </div>
                     </div>

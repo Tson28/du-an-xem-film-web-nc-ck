@@ -6,6 +6,7 @@ import { MapPin, Phone, Building2, ArrowLeft, Clock, Film } from 'lucide-react';
 import { Button, Empty, Tabs } from 'antd';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { getMediaUrl } from '@/utils/media';
 
 dayjs.extend(isSameOrAfter);
 
@@ -168,7 +169,7 @@ export default function CinemaSchedulePage() {
                                         <div className="flex items-center gap-4 mb-4">
                                             {group.movie.posterUrl && (
                                                 <img
-                                                    src={`${import.meta.env.VITE_API_URL}${group.movie.posterUrl}`}
+                                                    src={getMediaUrl(group.movie.posterUrl)}
                                                     alt={group.movie.title}
                                                     className="w-14 h-20 object-cover rounded-lg shrink-0"
                                                 />
