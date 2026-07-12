@@ -10,7 +10,7 @@ dayjs.extend(relativeTime);
 dayjs.locale('vi');
 
 const QUICK_REPLIES = ['Phim đang chiếu?', 'Tư vấn phim hành động', 'Phim gia đình hay?', 'Cách đặt vé?', 'Ưu đãi mới nhất?'];
-const WELCOME = 'Xin chào! Tôi là AI tư vấn của TT CINEMA.\nTôi có thể giúp bạn tìm phim hay, hướng dẫn đặt vé và tư vấn ưu đãi. Bạn cần tôi giúp gì hôm nay?';
+const WELCOME = 'Xin chào! Tôi là AI tư vấn của SUN CINEMA.\nTôi có thể giúp bạn tìm phim hay, hướng dẫn đặt vé và tư vấn ưu đãi. Bạn cần tôi giúp gì hôm nay?';
 
 // ─── Typing animation ─────────────────────────────────────────
 function TypingDots() {
@@ -54,7 +54,7 @@ export default function ChatbotWidget() {
     const [input, setInput]         = useState('');
     const [loading, setLoading]     = useState(false);
     const [unread, setUnread]       = useState(0);
-    const [sessionId, setSessionId] = useState(() => localStorage.getItem('ttcinema_chat_session') || null);
+    const [sessionId, setSessionId] = useState(() => localStorage.getItem('suncinema_chat_session') || null);
 
     // History state
     const [sessions, setSessions]         = useState([]);
@@ -84,7 +84,7 @@ export default function ChatbotWidget() {
                 } catch {
                     // Nếu lỗi (phiên bị xóa hoặc hết hạn), reset session
                     setSessionId(null);
-                    localStorage.removeItem('ttcinema_chat_session');
+                    localStorage.removeItem('suncinema_chat_session');
                 }
             };
             loadActiveChat();
@@ -140,7 +140,7 @@ export default function ChatbotWidget() {
             // Lưu session ID vào localStorage để F5 không bị mất
             if (res?.metadata?.sessionId && !sessionId) {
                 setSessionId(res.metadata.sessionId);
-                localStorage.setItem('ttcinema_chat_session', res.metadata.sessionId);
+                localStorage.setItem('suncinema_chat_session', res.metadata.sessionId);
             }
 
             setMessages((p) => [...p, { role: 'assistant', content: reply }]);
@@ -178,7 +178,7 @@ export default function ChatbotWidget() {
                             <Bot size={18} color="#fff" />
                         </div>
                         <div style={{ flex: 1 }}>
-                            <p style={{ color: '#fff', fontWeight: 700, fontSize: 14, lineHeight: 1.2 }}>TT CINEMA AI</p>
+                            <p style={{ color: '#fff', fontWeight: 700, fontSize: 14, lineHeight: 1.2 }}>SUN CINEMA AI</p>
                             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 4 }}>
                                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} />
                                 Luôn sẵn sàng hỗ trợ

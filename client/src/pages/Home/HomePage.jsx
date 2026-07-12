@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
 import { getMediaUrl } from '@/utils/media';
 import PosterRibbon, { getMovieRibbon } from '@/components/common/PosterRibbon';
+import { motion } from 'framer-motion';
 
 export default function HomePage() {
   const [movies, setMovies] = useState([]);
@@ -46,49 +47,115 @@ export default function HomePage() {
 
   const MovieCard = ({ movie, showRibbon = false, rank = null }) => {
     const ribbon = showRibbon ? getMovieRibbon(movie) : null;
+    const [coords, setCoords] = useState({ x: 0, y: 0 });
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseMove = (e) => {
+      const card = e.currentTarget;
+      const box = card.getBoundingClientRect();
+      const x = e.clientX - box.left - box.width / 2;
+      const y = e.clientY - box.top - box.height / 2;
+      
+      const normalizedX = x / (box.width / 2);
+      const normalizedY = y / (box.height / 2);
+      
+      setCoords({ x: normalizedX, y: normalizedY });
+    };
+
+    const handleMouseLeave = () => {
+      setIsHovered(false);
+      setCoords({ x: 0, y: 0 });
+    };
+
+    const rotateX = -coords.y * 15;
+    const rotateY = coords.x * 15;
+    
+    const glareX = (coords.x + 1) * 50;
+    const glareY = (coords.y + 1) * 50;
 
     return (
-    <Link to={`/phim/${movie.slug}`} className="group relative rounded-xl overflow-hidden cursor-pointer block shadow-lg shadow-black/40">
-      <div className="aspect-[2/3] w-full bg-[#111] relative overflow-hidden">
-        <img
-          src={getMediaUrl(movie.posterUrl)}
-          alt={movie.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+      <div 
+        className="perspective-1000 w-full"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+      >
+        <Link 
+          to={`/phim/${movie.slug}`} 
+          className="group relative rounded-xl overflow-hidden cursor-pointer block transition-all duration-300 preserve-3d shadow-2xl"
+          style={{
+            transform: isHovered 
+              ? `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.04, 1.04, 1.04)` 
+              : 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+            boxShadow: isHovered 
+              ? '0 25px 50px rgba(0,0,0,0.8), 0 0 25px rgba(229,9,20,0.3)' 
+              : '0 10px 20px rgba(0,0,0,0.5)',
+          }}
+        >
+          <div className="aspect-[2/3] w-full bg-[#111] relative overflow-hidden">
+            <img
+              src={getMediaUrl(movie.posterUrl)}
+              alt={movie.title}
+              className="w-full h-full object-cover transition-transform duration-500"
+              style={{
+                transform: isHovered ? 'scale(1.08) translateZ(15px)' : 'scale(1) translateZ(0px)',
+              }}
+            />
 
-        {ribbon && <PosterRibbon label={ribbon.label} color={ribbon.color} />}
+            {/* 3D Glare overlay */}
+            <div 
+              className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-30 transition-opacity duration-300"
+              style={{
+                background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.35) 0%, transparent 60%)`,
+              }}
+            />
 
-        {movie.ageRating && (
-          <div className="absolute top-2.5 right-2.5 z-10">
-            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded border shadow-lg backdrop-blur-md ${
-                movie.ageRating === 'T18' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
-                movie.ageRating === 'T16' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
-                movie.ageRating === 'T13' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
-                'bg-green-500/20 text-green-400 border-green-500/30'
-            }`}>
-                {movie.ageRating}
-            </span>
+            {/* Glowing inner border */}
+            <div 
+              className="absolute inset-0 z-30 pointer-events-none border border-white/5 group-hover:border-[#E50914]/40 transition-colors duration-300"
+            />
+
+            {ribbon && <PosterRibbon label={ribbon.label} color={ribbon.color} />}
+
+            {movie.ageRating && (
+              <div className="absolute top-2.5 right-2.5 z-10" style={{ transform: 'translateZ(25px)' }}>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded border shadow-lg backdrop-blur-md ${
+                    movie.ageRating === 'T18' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                    movie.ageRating === 'T16' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+                    movie.ageRating === 'T13' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
+                    'bg-green-500/20 text-green-400 border-green-500/30'
+                }`}>
+                    {movie.ageRating}
+                </span>
+              </div>
+            )}
+
+            {rank && rank <= 10 && (
+              <span
+                className="absolute bottom-2 left-2.5 z-10 font-black text-white leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+                style={{ 
+                  fontSize: rank <= 3 ? '3.5rem' : '2.2rem', 
+                  opacity: rank <= 3 ? 1 : 0.7,
+                  transform: 'translateZ(30px)',
+                }}
+              >
+                {rank}
+              </span>
+            )}
+
           </div>
-        )}
-
-        {rank && rank <= 10 && (
-          <span
-            className="absolute bottom-2 left-2 z-10 font-black text-white leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-            style={{ fontSize: rank <= 3 ? '3rem' : '2rem', opacity: rank <= 3 ? 1 : 0.75 }}
+          <div 
+            className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 z-20"
+            style={{ transform: 'translateZ(20px)' }}
           >
-            {rank}
-          </span>
-        )}
-
+            <h3 className="text-white font-bold text-base leading-tight mb-1 line-clamp-2">{movie.title}</h3>
+            <p className="text-gray-300 text-xs mb-3 line-clamp-2">{movie.description}</p>
+            <div className="bg-[#E50914] text-white py-2 px-4 rounded-lg font-bold text-sm text-center flex items-center justify-center gap-2 shadow-[0_0_12px_rgba(229,9,20,0.5)] group-hover:bg-[#FF0044] transition-colors duration-200">
+              <Play size={14} fill="white" /> {movie.status === 'Đang chiếu' ? 'Mua Vé' : 'Xem Thêm'}
+            </div>
+          </div>
+        </Link>
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-        <h3 className="text-white font-bold text-base leading-tight mb-1 line-clamp-2">{movie.title}</h3>
-        <p className="text-gray-300 text-xs mb-3 line-clamp-2">{movie.description}</p>
-        <div className="bg-[#E50914] text-white py-2 px-4 rounded-lg font-bold text-sm text-center flex items-center justify-center gap-2 shadow-[0_0_12px_rgba(229,9,20,0.5)]">
-          <Play size={14} fill="white" /> {movie.status === 'Đang chiếu' ? 'Mua Vé' : 'Xem Thêm'}
-        </div>
-      </div>
-    </Link>
     );
   };
 
@@ -131,19 +198,45 @@ export default function HomePage() {
     return (
       <section id={`section-${to}`} className="scroll-mt-20">
         <SectionHeader title={title} to={to} />
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+        <motion.div 
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.05
+              }
+            }
+          }}
+        >
           {paginated.map((movie, idx) => {
             const globalIndex = (page - 1) * ITEMS_PER_PAGE + idx;
             return (
-              <MovieCard
+              <motion.div
                 key={movie._id}
-                movie={movie}
-                showRibbon={withRibbon}
-                rank={withRibbon ? globalIndex + 1 : null}
-              />
+                variants={{
+                  hidden: { opacity: 0, y: 40, scale: 0.95 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1, 
+                    transition: { type: "spring", stiffness: 80, damping: 14 } 
+                  }
+                }}
+              >
+                <MovieCard
+                  movie={movie}
+                  showRibbon={withRibbon}
+                  rank={withRibbon ? globalIndex + 1 : null}
+                />
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 mt-10">
