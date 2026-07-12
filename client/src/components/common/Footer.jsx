@@ -51,18 +51,18 @@ export default function Footer() {
                                 <Film size={18} className="text-white" />
                             </div>
                             <span className="text-white font-black text-2xl tracking-tight">
-                                TT <span className="text-[#E50914]">CINEMA</span>
+                                SUN <span className="text-[#E50914]">CINEMA</span>
                             </span>
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
-                            Nền tảng đặt vé xem phim hiện đại, nhanh chóng và tiện lợi hàng đầu Việt Nam. Trải nghiệm điện ảnh đỉnh cao cùng TT CINEMA.
+                            Nền tảng đặt vé xem phim hiện đại, nhanh chóng và tiện lợi hàng đầu Việt Nam. Trải nghiệm điện ảnh đỉnh cao cùng SUN CINEMA.
                         </p>
 
                         {/* Contact */}
                         <div className="space-y-2 text-sm text-gray-500">
                             <div className="flex items-center gap-2">
                                 <MapPin size={14} className="text-[#E50914] shrink-0" />
-                                <span>123 Đường Điện Ảnh, Q.1, TP.HCM</span>
+                                <span>Đại học Phenikaa</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Phone size={14} className="text-[#E50914] shrink-0" />
@@ -70,7 +70,7 @@ export default function Footer() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <Mail size={14} className="text-[#E50914] shrink-0" />
-                                <span>support@ttcinema.vn</span>
+                                <span>support@suncinema.vn</span>
                             </div>
                         </div>
 
@@ -116,9 +116,9 @@ export default function Footer() {
             {/* Bottom bar */}
             <div className="border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
-                    <span>© 2026 TT CINEMA. Bảo lưu mọi quyền.</span>
+                    <span>© 2026 SUN CINEMA. Bảo lưu mọi quyền.</span>
                     <span className="flex items-center gap-1">
-                        Tạo với <Heart size={11} className="text-[#E50914] fill-[#E50914] mx-0.5" /> bởi đội ngũ TT CINEMA
+                        Tạo với <Heart size={11} className="text-[#E50914] fill-[#E50914] mx-0.5" /> bởi đội ngũ SUN CINEMA
                     </span>
                     <div className="flex gap-4">
                         <Link to="#" className="hover:text-gray-400 transition-colors">Điều khoản</Link>

@@ -5,6 +5,7 @@ import NotificationDropdown from '@/components/common/NotificationDropdown';
 import { useStore } from '../../hooks/useStore';
 import { requestLogout } from '../../config/UserRequest';
 import Cookies from 'js-cookie';
+import { getMediaUrl } from '@/utils/media';
 
 const NAV_LINKS = [
     { label: 'Phim Đang Chiếu', href: '/movies/now-showing' },
@@ -56,7 +57,7 @@ export default function Navbar() {
                         </div>
                         {/* Wordmark */}
                         <span className="text-[1.15rem] font-black tracking-tight leading-none select-none">
-                            <span style={{ color: '#E50914' }}>TT </span>
+                            <span style={{ color: '#E50914' }}>SUN</span>
                             <span className="text-white">CINEMA</span>
                         </span>
                     </a>
@@ -127,11 +128,7 @@ export default function Navbar() {
                                     <div className="w-6 h-6 rounded-full bg-[#E50914] flex items-center justify-center overflow-hidden">
                                         {dataUser.avatar ? (
                                             <img
-                                                src={
-                                                    dataUser.avatar.startsWith('http')
-                                                        ? dataUser.avatar
-                                                        : `${import.meta.env.VITE_API_URL}${dataUser.avatar}`
-                                                }
+                                                src={getMediaUrl(dataUser.avatar)}
                                                 alt="avatar"
                                                 className="w-full h-full object-cover"
                                             />

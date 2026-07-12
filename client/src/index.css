@@ -325,3 +325,56 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── 3D & Premium Utilities ───────────────────────────────────── */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-2000 {
+  perspective: 2000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Floating animation */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(0.5deg); }
+}
+.animate-float-y {
+  animation: float-y 4s ease-in-out infinite;
+}
+
+/* Floating subtle rotation */
+@keyframes float-rotate {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(2deg) scale(1.01); }
+}
+.animate-float-rotate {
+  animation: float-rotate 6s ease-in-out infinite;
+}
+
+/* Pulsing soft glow */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+/* Animated gradient border custom */
+.border-gradient-glow {
+  background: linear-gradient(90deg, #E50914, #ff5e3a, #ffaa00, #E50914);
+  background-size: 300% 100%;
+  animation: border-glow-move 4s linear infinite;
+}
+@keyframes border-glow-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
