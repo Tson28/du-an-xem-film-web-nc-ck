@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { Plus, Trash2, Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { Table, Button, Modal, Form, Space, Popconfirm, Select, DatePicker, InputNumber, Tag } from 'antd';
 import dayjs from 'dayjs';
+import { getMediaUrl } from '@/utils/media';
 
 export default function ShowtimesPage() {
     const [showtimes, setShowtimes] = useState([]);
@@ -255,7 +256,7 @@ export default function ShowtimesPage() {
             render: (_, record) => (
                 <div className="flex items-center gap-3">
                     <img
-                        src={`${import.meta.env.VITE_API_URL}${record.movie?.posterUrl}`}
+                        src={getMediaUrl(record.movie?.posterUrl)}
                         alt="poster"
                         className="w-10 h-14 object-cover rounded shadow"
                     />

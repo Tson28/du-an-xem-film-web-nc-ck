@@ -7,6 +7,7 @@ import {
 } from '@/config/ServiceRequest';
 import { toast } from 'react-toastify';
 import { Plus, Edit2, Trash2, Coffee, UploadCloud } from 'lucide-react';
+import { getMediaUrl } from '@/utils/media';
 import { Table, Button, Modal, Form, Input, Space, Popconfirm, InputNumber, Upload } from 'antd';
 
 export default function ServicesPage() {
@@ -39,14 +40,14 @@ export default function ServicesPage() {
     const openModal = (mode, service = null) => {
         setModalMode(mode);
         setImageFile(null);
-        if (mode === 'edit' && service) {
+            if (mode === 'edit' && service) {
             setCurrentId(service._id);
             form.setFieldsValue({
                 name: service.name,
                 price: service.price,
                 description: service.description,
             });
-            setPreviewImage(service.imageUrl ? `${import.meta.env.VITE_API_URL}${service.imageUrl}` : null);
+            setPreviewImage(service.imageUrl ? getMediaUrl(service.imageUrl) : null);
         } else {
             form.resetFields();
             setPreviewImage(null);
@@ -118,7 +119,7 @@ export default function ServicesPage() {
                 <div className="w-16 h-16 rounded-md bg-[#1a1a1a] border border-white/10 overflow-hidden flex items-center justify-center">
                     {text ? (
                         <img
-                            src={`${import.meta.env.VITE_API_URL}${text}`}
+                            src={getMediaUrl(text)}
                             alt="Combo"
                             className="w-full h-full object-cover"
                         />

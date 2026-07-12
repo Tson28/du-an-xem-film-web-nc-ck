@@ -5,6 +5,7 @@ import { Table, Tag, Input, Button, Popconfirm } from 'antd';
 import { ReceiptText, Search, CheckCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import { getMediaUrl } from '@/utils/media';
 
 const statusConfig = {
     Paid:      { label: 'Đã TT', color: 'success' },
@@ -67,7 +68,7 @@ export default function BookingsPage() {
                 <div className="flex items-center gap-3">
                     {b.showtimeId?.movieId?.posterUrl && (
                         <img
-                            src={`${import.meta.env.VITE_API_URL}${b.showtimeId.movieId.posterUrl}`}
+                            src={getMediaUrl(b.showtimeId.movieId.posterUrl)}
                             className="w-10 h-14 object-cover rounded"
                             alt=""
                         />

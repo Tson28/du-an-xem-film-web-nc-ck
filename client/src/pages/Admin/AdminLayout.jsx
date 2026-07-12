@@ -72,7 +72,7 @@ export default function AdminLayout() {
                             <Film size={18} className="text-white" />
                         </div>
                         <span className="text-xl font-black tracking-tight leading-none">
-                            <span className="text-[#E50914]">TT</span>
+                            <span className="text-[#E50914]">SUN</span>
                             <span className="text-white">ADMIN</span>
                         </span>
                     </Link>

@@ -4,6 +4,7 @@ import { Users, Search, Trash2, Edit2, ShieldCheck, User, Crown, BadgeCheck, Sta
 import { apiClient } from '@/config/axiosClient';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import { getMediaUrl } from '@/utils/media';
 
 const TIER_CONFIG = {
     'Thành viên': { color: 'default', bg: 'bg-gray-500/10 text-gray-400 border-gray-500/20' },
@@ -115,9 +116,7 @@ export default function UsersPage() {
                 <div className="flex items-center gap-3">
                     <Avatar
                         size={40}
-                        src={u.avatar
-                            ? (u.avatar.startsWith('http') ? u.avatar : `${import.meta.env.VITE_API_URL}${u.avatar}`)
-                            : null}
+                        src={u.avatar ? getMediaUrl(u.avatar) : null}
                         className="border border-white/10 bg-[#1a1a1a] shrink-0"
                     >
                         {!u.avatar && u.fullName?.[0]?.toUpperCase()}
@@ -301,9 +300,7 @@ export default function UsersPage() {
                     <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5">
                         <Avatar
                             size={48}
-                            src={editUser.avatar
-                                ? (editUser.avatar.startsWith('http') ? editUser.avatar : `${import.meta.env.VITE_API_URL}${editUser.avatar}`)
-                                : null}
+                            src={editUser.avatar ? getMediaUrl(editUser.avatar) : null}
                             className="bg-[#1a1a1a] border border-white/10"
                         >
                             {!editUser.avatar && editUser.fullName?.[0]?.toUpperCase()}

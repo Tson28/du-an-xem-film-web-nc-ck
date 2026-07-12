@@ -273,7 +273,7 @@ export default function CinemasPage() {
       >
         <Form form={cinemaForm} layout="vertical" onFinish={handleCinemaSubmit} className="mt-6">
           <Form.Item name="name" label="Tên rạp" rules={[{ required: true }]}>
-            <Input placeholder="TT CINEMA Landmark 81..." size="large" className="bg-[#1a1a1a] border-white/10 text-white" />
+            <Input placeholder="SUN CINEMA Landmark 81..." size="large" className="bg-[#1a1a1a] border-white/10 text-white" />
           </Form.Item>
           <Form.Item name="city" label="Thành phố" rules={[{ required: true }]}>
             <Input placeholder="TP.HCM..." size="large" className="bg-[#1a1a1a] border-white/10 text-white" />
