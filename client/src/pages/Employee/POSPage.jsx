@@ -8,6 +8,7 @@ import { requestCreateOfflineBooking } from '@/config/BookingRequest';
 import dayjs from 'dayjs';
 import { useReactToPrint } from 'react-to-print';
 import PrintableTicket from '@/components/Employee/PrintableTicket';
+import { getMediaUrl } from '@/utils/media';
 
 const { Option } = Select;
 
@@ -377,7 +378,7 @@ export default function POSPage() {
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 bg-black rounded-lg overflow-hidden">
                                             {sv.imageUrl ? (
-                                                <img src={`${import.meta.env.VITE_API_URL}${sv.imageUrl}`} alt={sv.name} className="w-full h-full object-cover" />
+                                                <img src={getMediaUrl(sv.imageUrl)} alt={sv.name} className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">No Img</div>
                                             )}

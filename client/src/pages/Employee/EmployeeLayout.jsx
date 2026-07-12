@@ -52,7 +52,7 @@ export default function EmployeeLayout() {
               <QrCode size={18} className="text-white" />
             </div>
             <span className="text-xl font-black tracking-tight leading-none">
-              <span className="text-[#E50914]">FLIX</span>
+              <span className="text-[#E50914]">SUN</span>
               <span className="text-white">STAFF</span>
             </span>
           </Link>

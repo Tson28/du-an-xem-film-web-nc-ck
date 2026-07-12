@@ -118,7 +118,7 @@ export default function App() {
             theme={{
                 algorithm: theme.darkAlgorithm,
                 token: {
-                    colorPrimary: '#E50914', // Đỏ Neon của TT CINEMA
+                    colorPrimary: '#E50914', // Đỏ Neon của SUN CINEMA
                     colorBgBase: '#050505',
                     colorBgContainer: '#111111',
                     colorBorderSecondary: 'rgba(255, 255, 255, 0.05)',
