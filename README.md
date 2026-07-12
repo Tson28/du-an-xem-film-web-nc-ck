@@ -150,46 +150,11 @@ Hệ thống của bạn trông giống sơ đồ kiến trúc sau:
   - Mọi câu hỏi đều được gửi đến API Groq để sinh câu trả lời dựa trên prompt và dữ liệu hiện có.
 - Ngoài ra, service còn có chức năng tóm tắt review phim bằng AI với prompt chuyên biệt, giúp tổng hợp cảm nhận người xem.
 
-## 6. Kịch bản thuyết trình
-### 6.1 Mở đầu
-"Kính thưa quý thầy cô và các bạn, hôm nay em xin trình bày hệ thống đặt vé xem phim trực tuyến TT-CINEMA.
-Hệ thống được xây dựng theo mô hình 3 lớp: Frontend React, Backend Node/Express và Data Layer MongoDB." 
 
-### 6.2 Trình bày kiến trúc
-"Phần Frontend nằm trong thư mục `client/`, sử dụng React để hiển thị phim, lịch chiếu, chọn ghế và thanh toán.
-Phần Backend nằm trong `server/`, dùng Express làm API Gateway, định nghĩa các route như `/api/movies`, `/api/bookings`, `/api/payment`,..." 
 
-### 6.3 Nói về database
-"Dữ liệu lưu trữ trong MongoDB. Mỗi collection tương ứng model trong `server/src/models`.
-Chuỗi kết nối được cấu hình qua biến môi trường `CONNECT_DB` trong `server/src/config/connectDB.js`.
-Các file seed dữ liệu và script hỗ trợ dùng `mongodb://127.0.0.1:27017/movie2` nếu chưa cấu hình." 
-
-### 6.4 Nói về API và hoạt động
-"API được đặt trong `server/src/routes` và đi qua `server/src/routes/index.routes.js`.
-Frontend gọi các endpoint ấy để lấy danh sách phim, lịch chiếu, quản lý vé và thanh toán.
-Socket.IO hỗ trợ cập nhật trạng thái ghế theo thời gian thực khi người dùng chọn ghế." 
-
-### 6.5 Chức năng cụ thể
-"Một vài chức năng chính:
-- Quản lý người dùng và xác thực JWT.
-- Quản lý phim, rạp, suất chiếu và ghế.
-- Đặt vé và giữ ghế online.
-- Thanh toán online qua Momo/VNPAY.
-- Quản lý voucher, review, thông báo và chatbot hỗ trợ." 
-
-### 6.6 Kết luận
-"Tóm lại, TT-CINEMA là một hệ thống đặt vé phim trực tuyến đầy đủ với:
-- Frontend React linh hoạt,
-- Backend Node/Express mở rộng,
-- MongoDB lưu trữ dữ liệu,
-- Socket.IO đồng bộ ghế real-time,
-- File upload ảnh được lưu tạm trong `server/src/uploads`."
-
-## 7. Cách chạy nhanh
+## 6. Cách chạy nhanh
 1. Vào thư mục `server/`, cài dependencies và chạy `npm run dev`.
 2. Vào thư mục `client/`, cài dependencies và chạy `npm run dev`.
 3. Đảm bảo `CONNECT_DB` trỏ đến MongoDB và `URL_CLIENT` trỏ đến địa chỉ client.
 
 ---
-
-*File này tạo để mô tả kiến trúc, vị trí database, nơi lưu trữ API và kịch bản thuyết trình cho dự án TT-CINEMA.*
