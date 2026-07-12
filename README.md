@@ -1,160 +1,140 @@
-# TT-CINEMA
+# SUN CINEMA
 
 ## 1. Giới thiệu hệ thống
-TT-CINEMA là hệ thống đặt vé xem phim trực tuyến gồm 3 phần chính:
+SUN CINEMA là hệ thống đặt vé xem phim trực tuyến gồm 3 phần chính:
 - Frontend (client): giao diện người dùng React.
 - Backend (server): API Node.js + Express xử lý nghiệp vụ và giao tiếp dữ liệu.
 - Data Layer: MongoDB lưu dữ liệu phim, suất chiếu, người dùng, vé, đánh giá...
 
 ## 2. Kiến trúc tổng quát
-Hệ thống của bạn trông giống sơ đồ kiến trúc sau:
-- Người dùng tương tác qua trình duyệt/ứng dụng React.
+Hệ thống được thiết kế theo sơ đồ kiến trúc chuẩn sau:
+- Người dùng tương tác trực quan qua trình duyệt bằng ứng dụng React.
 - Frontend gọi API REST tới backend để lấy dữ liệu phim, lịch chiếu, thanh toán và quản lý tài khoản.
-- Backend dùng Express làm API Gateway, có middleware xử lý JWT, xác thực, phân quyền và logging.
-- Backend kết nối MongoDB qua Mongoose để lưu trữ dữ liệu.
-- Backend cũng sử dụng Socket.IO để xử lý ghế giữ/chia sẻ trạng thái ghế trong thời gian thực.
-- Hình ảnh, poster, avatar, file media được lưu tạm trong thư mục upload nội bộ của server.
+- Backend dùng Express làm API Gateway, tích hợp middleware xử lý JWT, xác thực, phân quyền và ghi log (logging).
+- Backend kết nối cơ sở dữ liệu MongoDB qua Mongoose để lưu trữ và truy vấn dữ liệu.
+- Backend sử dụng Socket.IO để xử lý giữ ghế và đồng bộ trạng thái ghế theo thời gian thực.
+- Hình ảnh, poster, avatar, file media được lưu trữ tại thư mục upload nội bộ của server.
 
 ## 3. Vị trí lưu trữ dữ liệu
 ### 3.1 Database
-- Dữ liệu chính của hệ thống lưu trong MongoDB.
+- Dữ liệu chính của hệ thống được lưu trữ tập trung trong MongoDB.
 - Tệp cấu hình kết nối: `server/src/config/connectDB.js`.
-- Chuỗi kết nối MongoDB lấy từ biến môi trường `process.env.CONNECT_DB`.
-- Trong mã nguồn seed và các script phụ, nếu không có biến môi trường thì dùng fallback `mongodb://127.0.0.1:27017/movie2`.
+- Chuỗi kết nối MongoDB được cấu hình động qua biến môi trường `process.env.CONNECT_DB`.
+- Trong mã nguồn seed dữ liệu và các script phụ, nếu không tìm thấy biến môi trường hệ thống sẽ tự động dùng fallback mặc định: `mongodb://127.0.0.1:27017/movie2`.
 
 ### 3.2 File storage
-- Ảnh phim, poster, backdrop, avatar, hình service được upload và lưu local tại:
+- Toàn bộ ảnh phim, poster, backdrop, ảnh đại diện (avatar) và hình ảnh dịch vụ được upload và lưu cục bộ tại:
   - `server/src/uploads/movies`
   - `server/src/uploads/services`
   - `server/src/uploads/avatars`
   - `server/src/uploads/category`
-- Server Express đang phục vụ thư mục `server/src` làm static files, nên URL ảnh sẽ có dạng `/uploads/...`.
+- Server Express phục vụ thư mục `server/src` dưới dạng static files, do đó URL của tài nguyên ảnh sẽ có cấu trúc dạng `/uploads/...`.
 
 ## 4. API được lưu trữ ở đâu
 ### 4.1 Vị trí API
-- API chính nằm trong thư mục: `server/src/routes`.
-- Tệp định tuyến tổng: `server/src/routes/index.routes.js`.
-- `server/src/server.js` khởi tạo Express và gọi `routes(app)`.
+- Mã nguồn định nghĩa API chính nằm trong thư mục: `server/src/routes`.
+- Tệp định tuyến tổng hợp: `server/src/routes/index.routes.js`.
+- Tệp cấu hình khởi chạy `server/src/server.js` đảm nhận khởi tạo Express và kích hoạt định tuyến thông qua hàm `routes(app)`.
 
 ### 4.2 Các nhóm API chính
-- `/api/users` - quản lý người dùng, đăng nhập, đăng ký, avatar.
-- `/api/category` - quản lý danh mục phim.
-- `/api/movies` - tạo, chỉnh sửa, lấy thông tin phim.
-- `/api/cinemas` - quản lý rạp.
-- `/api/rooms` - quản lý phòng chiếu.
-- `/api/showtimes` - quản lý suất chiếu.
-- `/api/services` - quản lý dịch vụ ăn uống, combo.
-- `/api/bookings` - đặt vé, giữ ghế, đơn hàng.
-- `/api/vouchers` - quản lý voucher giảm giá.
-- `/api/payment` - thanh toán Momo/VNPAY.
-- `/api/reviews` - đánh giá phim.
-- `/api/statistics` - báo cáo doanh thu, thống kê.
-- `/api/gifts` - quản lý quà tặng.
-- `/api/chatbot` - chatbot trợ giúp người dùng.
-- `/api/notifications` - thông báo cho người dùng.
+- `/api/users` - Quản lý tài khoản người dùng, đăng nhập, đăng ký và cập nhật avatar.
+- `/api/category` - Quản lý danh mục và thể loại phim.
+- `/api/movies` - Thêm, sửa, xóa và truy vấn thông tin phim.
+- `/api/cinemas` - Quản lý hệ thống rạp chiếu.
+- `/api/rooms` - Quản lý phòng chiếu phim.
+- `/api/showtimes` - Quản lý các suất chiếu.
+- `/api/services` - Quản lý dịch vụ ăn uống, bắp nước và các gói combo đi kèm.
+- `/api/bookings` - Quy trình đặt vé, giữ ghế và quản lý đơn hàng.
+- `/api/vouchers` - Quản lý mã giảm giá, voucher khuyến mãi.
+- `/api/payment` - Tích hợp cổng thanh toán trực tuyến MoMo/VNPAY.
+- `/api/reviews` - Tiếp nhận phản hồi và đánh giá phim từ khán giả.
+- `/api/statistics` - Thống kê báo cáo doanh thu và hiệu suất phòng vé.
+- `/api/gifts` - Quản lý quà tặng thành viên.
+- `/api/chatbot` - API tích hợp trợ lý ảo thông minh hỗ trợ khách hàng.
+- `/api/notifications` - Hệ thống gửi thông báo tự động tới người dùng.
 
 ## 5. Các chức năng chính vận hành
 ### 5.1 Frontend
-- React quản lý UI, định tuyến bằng React Router.
-- Gọi API bằng Axios/FETCH để lấy dữ liệu phim, lịch chiếu, ghế, thanh toán.
-- Hiển thị danh sách phim, chi tiết phim, chọn ghế, thanh toán, quản lý tài khoản.
+- Sử dụng thư viện React để quản lý UI, điều hướng phân luồng trang bằng React Router.
+- Kết nối và gọi API thông qua Axios/FETCH để lấy dữ liệu phim, lịch chiếu, sơ đồ ghế và thực hiện thanh toán.
+- Hiển thị danh sách phim trực quan, chi tiết phim, giao diện chọn ghế trực quan, cổng checkout và quản lý thông tin cá nhân.
 
 ### 5.2 Backend
-- Express xử lý request, trả response JSON.
-- Mỗi route điều khiển bởi controller tương ứng trong `server/src/controller`.
-- Controller gọi service để xử lý nghiệp vụ trong `server/src/services`.
-- Mỗi model trong `server/src/models` định nghĩa collection MongoDB.
-- Middleware `server/src/auth/checkAuth.js` kiểm tra JWT và quyền truy cập.
-- Socket.IO xử lý giữ ghế thời gian thực khi người dùng chọn ghế.
+- Tiếp nhận và xử lý request từ client, trả về phản hồi chuẩn hóa dưới định dạng dữ liệu JSON.
+- Mỗi route được điều hướng và xử lý bởi một controller tương ứng đặt tại `server/src/controller`.
+- Controller gọi tầng service tại `server/src/services` để thực thi các nghiệp vụ logic sâu hơn.
+- Hệ thống định nghĩa cấu trúc bảng (collection) MongoDB thông qua các model tại `server/src/models`.
+- Lớp bảo mật middleware `server/src/auth/checkAuth.js` thực hiện xác thực chữ ký mã hóa JWT và kiểm tra phân quyền truy cập.
+- Thư viện Socket.IO quản lý toàn bộ trạng thái đóng/mở giữ ghế theo thời gian thực khi người dùng tương tác trên sơ đồ rạp.
 
 ### 5.3 Database
-- MongoDB lưu:
-  - users
-  - movies
-  - categories
-  - cinemas
-  - rooms
-  - showtimes
-  - bookings
-  - payments
-  - reviews
-  - vouchers
-  - notifications
-  - chat histories
-- Dữ liệu seed có thể được khởi tạo bằng các script trong `server/src/seed*.js`.
+- Hệ thống lưu trữ các tập dữ liệu bao gồm: users, movies, categories, cinemas, rooms, showtimes, bookings, payments, reviews, vouchers, notifications, chat histories.
+- Dữ liệu mẫu (Seed data) phục vụ môi trường thử nghiệm được khởi tạo nhanh chóng thông qua các script tại hệ thống tệp `server/src/seed*.js`.
 
 ### 5.4 Các chức năng nổi bật
-- Đặt ghế và giữ ghế online: người dùng chọn ghế trực tiếp trên giao diện, hệ thống dùng Socket.IO để giữ ghế trong thời gian thực và tránh trùng lặp.
-- Comment và đánh giá phim: khách hàng có thể để lại bình luận, đánh giá sao và xem điểm đánh giá trung bình của từng phim.
-- Chatbot AI: hỗ trợ người dùng tra cứu phim, hướng dẫn đặt vé, thanh toán và giải đáp các câu hỏi thường gặp bằng AI.
+- **Đặt ghế và giữ ghế thời gian thực**: Người dùng chọn ghế trực tiếp trên sơ đồ phòng chiếu, hệ thống sử dụng Socket.IO thiết lập phiên giữ ghế tạm thời, đồng bộ ngay lập tức tới tất cả người dùng khác đang xem cùng suất chiếu nhằm tránh trùng ghế.
+- **Bình luận & Đánh giá phim chuyên sâu**: Khách hàng có thể đóng góp ý kiến cá nhân bằng cách chấm điểm sao và viết bình luận, hệ thống tự động tổng hợp tính điểm rating trung bình cho từng bộ phim.
+- **Trợ lý ảo Chatbot AI**: Tích hợp mô hình AI thông minh hỗ trợ giải đáp nhanh lịch chiếu, giá vé, hướng dẫn thao tác đặt vé và xử lý các câu hỏi thường gặp một cách tự động.
 
-### 5.5 Quy trình đặt vé
-1. Người dùng chọn phim và suất chiếu.
-2. Frontend gọi API `/api/showtimes` để lấy thông tin ghế và suất.
-3. Người dùng chọn ghế, Socket.IO gửi `seat:hold` lên server để giữ ghế.
-4. Server xử lý giữ ghế và broadcast trạng thái ghế cho các client khác trong cùng suất chiếu.
-5. Người dùng hoàn tất đơn đặt vé và thanh toán qua API `/api/payment`.
-6. Nếu thanh toán thành công, server tạo booking trong MongoDB và giải phóng ghế giữ.
+### 5.5 Quy trình đặt vé tiêu chuẩn
+1. Người dùng tìm kiếm và lựa chọn phim kèm suất chiếu mong muốn.
+2. Frontend thực hiện gọi API `/api/showtimes` để truy xuất cấu trúc phòng và trạng thái ghế hiện thời.
+3. Người dùng click chọn ghế trên sơ đồ, luồng truyền thông Socket.IO phát tín hiệu `seat:hold` lên máy chủ để khóa ghế tạm thời.
+4. Server tiếp nhận lệnh giữ ghế và phát quảng bá (broadcast) cập nhật trạng thái tới tất cả các client đang kết nối trong phòng vé đó.
+5. Người dùng hoàn tất biểu mẫu thông tin và tiến hành thanh toán hóa đơn thông qua API `/api/payment`.
+6. Sau khi cổng thanh toán phản hồi thành công, server chính thức tạo bản ghi booking vào cơ sở dữ liệu MongoDB và giải phóng phiên giữ ghế tạm.
 
-### 5.6 Thanh toán Momo và VNPay
-- Thanh toán Momo và VNPay được xử lý qua `server/src/routes/payment.routes.js`.
-- User gửi yêu cầu tạo thanh toán bằng API:
-  - `POST /api/payment/momo` để tạo link Momo.
-  - `POST /api/payment/vnpay` để tạo link VNPay.
-- Backend tạo booking với `status='Pending'` bằng `server/src/services/payment.service.js` trước khi trả về URL thanh toán.
-- Với Momo, service xây dựng yêu cầu sandbox đến `test-payment.momo.vn` bằng `accessKey`, `secretKey`, `partnerCode` và gửi `extraData` chứa `bookingId`.
-- Với VNPay, service dùng thư viện `vnpay` để tạo URL thanh toán đến `https://sandbox.vnpayment.vn` với thông tin đơn hàng và `vnp_ReturnUrl`.
-- Sau khi người dùng thanh toán thành công, có 2 luồng xác nhận:
-  - Callback server-to-server (IPN) với `POST /api/payment/momo/callback` hoặc `GET /api/payment/vnpay/callback`.
-  - Client redirect quay về và gọi tiếp `POST /api/payment/momo/confirm-return` hoặc `POST /api/payment/vnpay/confirm-return` để cập nhật booking.
-- Khi thanh toán thành công, backend gọi `markBookingAsPaid()` để chuyển trạng thái booking từ `Pending` thành `Paid`, lưu `paymentTransactionId` và chạy các hành động hậu cần như cập nhật voucher, gửi email xác nhận và xử lý quà tặng.
+### 5.6 Tích hợp thanh toán trực tuyến MoMo và VNPay
+- Hệ thống xử lý cổng thanh toán trực tuyến được định tuyến tại `server/src/routes/payment.routes.js`.
+- Client gửi yêu cầu khởi tạo giao dịch thông qua các API:
+  - `POST /api/payment/momo` để lấy URL thanh toán từ cổng MoMo.
+  - `POST /api/payment/vnpay` để lấy URL thanh toán từ cổng VNPay.
+- Hệ thống tự động thiết lập một bản ghi booking lưu trạng thái `status='Pending'` thông qua lớp nghiệp vụ `server/src/services/payment.service.js` trước khi điều hướng người dùng tới trang thanh toán.
+- **Đối với MoMo**: Service thực hiện đóng gói cấu trúc request sandbox gửi tới cổng thử nghiệm `test-payment.momo.vn` sử dụng bộ khóa xác thực `accessKey`, `secretKey`, `partnerCode` kèm trường dữ liệu mở rộng `extraData` chứa thông tin định danh `bookingId`.
+- **Đối với VNPay**: Service ứng dụng thư viện `vnpay` chính thức để thiết lập URL thanh toán mã hóa gửi tới `https://sandbox.vnpayment.vn` kèm tham số đơn hàng và địa chỉ phản hồi cấu hình `vnp_ReturnUrl`.
+- Khi người dùng hoàn tất giao dịch, hệ thống áp dụng cơ chế xác thực kép:
+  - Luồng truyền thông ngầm Server-to-Server (IPN) qua endpoint `POST /api/payment/momo/callback` hoặc `GET /api/payment/vnpay/callback`.
+  - Kết hợp luồng điều hướng trình duyệt của client về trang xử lý trung gian: `POST /api/payment/momo/confirm-return` hoặc `POST /api/payment/vnpay/confirm-return` để thực hiện hậu kiểm dữ liệu.
+- Sau khi xác thực thông tin giao dịch khớp và thành công, hàm `markBookingAsPaid()` được kích hoạt nhằm cập nhật trạng thái hóa đơn từ `Pending` sang `Paid`, lưu vết mã giao dịch `paymentTransactionId`, đồng thời kích hoạt các tiến trình phụ bao gồm trừ hạn mức voucher, gửi email hóa đơn điện tử xác nhận và xử lý quà tặng tích lũy.
 
-### 5.7 Quét QR để kiểm tra và soát vé
-- QR code trên vé thực tế là `booking._id` được tạo bởi hệ thống.
-- Mỗi lần khách đặt vé thành công, MongoDB tạo ra một `_id` duy nhất cho booking đó. Vì `_id` này khác nhau cho mỗi đơn vé, nên mã QR cũng khác nhau cho mỗi vé.
-- Trong frontend, giá trị này được đưa vào QR bằng cách dùng `QRCode value={booking._id}` ở các trang `client/src/pages/Booking/BookingResultPage.jsx` và `client/src/pages/Booking/MyTicketsPage.jsx`.
-- Máy quét vé nhân viên dùng trang `client/src/pages/Employee/ScannerPage.jsx` với `html5-qrcode` để quét camera.
-- Khi quét được, frontend gọi API:
-  - `GET /api/bookings/:id/verify` để lấy chi tiết vé và kiểm tra trạng thái.
-  - `PUT /api/bookings/:id/checkin` để soát vé và chuyển trạng thái sang `CheckedIn`.
-- Backend xử lý trên `server/src/routes/booking.routes.js` và `server/src/controller/booking.controller.js`.
-- Kiểm tra vé đảm bảo vé phải tồn tại và đã được thanh toán (`status === 'Paid'`) trước khi cho phép soát.
-- Sau khi soát, vé được đánh dấu `CheckedIn`, lưu người soát, và trang nhân viên có thể in vé bằng `react-to-print`.
+### 5.7 Quét mã QR kiểm tra và soát vé tự động
+- Mã QR đính kèm trên mỗi vé điện tử được mã hóa trực tiếp từ chuỗi định danh duy nhất `booking._id` do MongoDB sinh ra tự động. Vì `_id` này mang tính duy nhất toàn hệ thống, mã QR tương ứng sẽ không thể làm giả hoặc trùng lặp.
+- Phía giao diện, mã QR được tạo động bằng cách truyền giá trị vào cấu phần `<QRCode value={booking._id} />` tại các màn hình kết quả `client/src/pages/Booking/BookingResultPage.jsx` và trang lịch sử vé `client/src/pages/Booking/MyTicketsPage.jsx`.
+- Nhân viên soát vé tại rạp sử dụng camera thiết bị truy cập vào phân hệ quản lý `client/src/pages/Employee/ScannerPage.jsx`, ứng dụng thư viện quét mã `html5-qrcode` để nhận diện dữ liệu.
+- Khi nhận diện mã thành công, hệ thống frontend gửi yêu cầu thực thi tới API:
+  - `GET /api/bookings/:id/verify` để truy xuất thông tin chi tiết và xác thực tính hợp lệ của vé.
+  - `PUT /api/bookings/:id/checkin` để xác nhận soát vé thành công và chuyển đổi trạng thái bản ghi sang `CheckedIn`.
+- Toàn bộ tiến trình nghiệp vụ soát vé được điều khiển bởi tập tệp `server/src/routes/booking.routes.js` và `server/src/controller/booking.controller.js`.
+- Hệ thống ràng buộc nghiêm ngặt điều kiện vé phải tồn tại hợp lệ và trạng thái giao dịch phải là đã thanh toán (`status === 'Paid'`) trước khi cho phép check-in vào rạp. Sau khi hoàn tất kiểm tra, hệ thống lưu vết định danh nhân viên soát vé và cho phép kết nối máy in nhiệt xuất vé giấy thông qua thư viện `react-to-print`.
 
-### 5.8 Comment và đánh giá phim
-- Chức năng bình luận và đánh giá phim được triển khai qua route `server/src/routes/review.routes.js`.
-- Người dùng đã đăng nhập có thể gửi đánh giá cho một phim bằng API `POST /api/reviews/:movieId`.
-- Mỗi người dùng chỉ được đánh giá một lần cho mỗi phim.
-- Review gồm:
-  - `rating`: điểm số từ 1 đến 5 sao.
-  - `comment`: nội dung bình luận.
-  - `isVerified`: đánh dấu người đánh giá đã từng mua vé xem phim đó hay chưa.
-- Backend kiểm tra người dùng có booking đã thanh toán cho phim đó trong `server/src/services/review.service.js` trước khi cho phép tạo review.
-- Hệ thống tính trung bình số sao và tổng số review cho từng phim.
-- Các review được lưu trong collection `reviews` thông qua model `server/src/models/review.model.js`.
-- Nếu số lượng review đủ lớn (từ 5 đánh giá), hệ thống tự động gọi AI để tóm tắt ý kiến khán giả và cập nhật vào trường `aiSummary` của phim trong model `server/src/models/movies.model.js`.
-- Chức năng này giúp hiện thị đánh giá chi tiết và tạo ra một bản tóm tắt tổng quan cho người dùng.
+### 5.8 Bình luận và chấm điểm đánh giá phim
+- Chức năng tiếp nhận phản hồi của người dùng vận hành qua định tuyến `server/src/routes/review.routes.js`.
+- Khách hàng sau khi đăng nhập tài khoản hợp lệ có thể gửi đánh giá cho bộ phim yêu thích qua API `POST /api/reviews/:movieId`.
+- Để đảm bảo tính khách quan và chống spam, hệ thống giới hạn mỗi tài khoản chỉ được quyền đánh giá một lần duy nhất trên một bộ phim.
+- Một bản ghi đánh giá tiêu chuẩn bao gồm:
+  - `rating`: Số sao bình chọn từ 1 đến 5.
+  - `comment`: Nội dung văn bản bình luận.
+  - `isVerified`: Nhãn chứng thực người dùng đã thực sự phát sinh giao dịch mua vé xem phim này tại hệ thống hay chưa.
+- Hệ thống thực hiện hậu kiểm tại lớp xử lý `server/src/services/review.service.js`, kiểm tra xem tài khoản đã có lịch sử đơn hàng hoàn tất đối với bộ phim này chưa để gán nhãn chứng thực.
+- Toàn bộ dữ liệu phản hồi được lưu trữ trong collection `reviews` thông qua mô hình `server/src/models/review.model.js`, từ đó hệ thống liên tục tính toán cập nhật điểm số rating trung bình và tổng số lượng phản hồi công khai của phim.
+- **Tính năng AI tích hợp**: Khi một bộ phim nhận đủ lượng phản hồi lớn (tối thiểu từ 5 đánh giá trở lên), hệ thống sẽ tự động kích hoạt tiến trình nền gọi mô hình AI để tóm tắt, tổng hợp xu hướng ý kiến của khán giả và cập nhật trực tiếp vào trường dữ liệu `aiSummary` của bộ phim đó tại `server/src/models/movies.model.js`.
 
-### 5.9 Chatbot AI
-- Chatbot nằm trong backend `server/src/routes/chatbot.routes.js` và controller `server/src/controller/chatbot.controller.js`.
-- Frontend gọi API `POST /api/chatbot/chat` qua `client/src/config/ChatbotRequest.js`.
-- Backend định danh người dùng bằng token JWT nếu đã login, hoặc dùng `sessionId` cục bộ nếu guest.
-- Lịch sử chat được lưu trong collection `chat_histories` qua model `server/src/models/chatHistory.model.js`.
-- Logic AI chính nằm ở `server/src/services/chatbot.service.js`:
-  - Hàm `buildMovieContext()` lấy dữ liệu phim đang chiếu từ MongoDB để tạo ngữ cảnh ngày càng chính xác.
-  - Hàm `chat()` xây dựng `systemPrompt` cố định với nhiệm vụ trợ lý rạp chiếu và nhúng danh sách phim, rồi gọi Groq AI qua `groq-sdk`.
-  - Hàm `chatWithHistory()` kết hợp lịch sử 10 tin nhắn gần nhất vào request để AI trả lời có ngữ cảnh.
-- Chatbot không “tự học” trực tiếp từ toàn bộ website theo cách lưu trữ học lại model. Thay vào đó:
-  - Nó dùng mô hình ngôn ngữ bên thứ ba (Groq AI) đã được huấn luyện trước.
-  - Nó cung cấp cho mô hình ngữ cảnh hiện tại từ cơ sở dữ liệu phim và lịch sử chat.
-  - Mọi câu hỏi đều được gửi đến API Groq để sinh câu trả lời dựa trên prompt và dữ liệu hiện có.
-- Ngoài ra, service còn có chức năng tóm tắt review phim bằng AI với prompt chuyên biệt, giúp tổng hợp cảm nhận người xem.
+### 5.9 Hệ thống trợ lý Chatbot AI thông minh
+- Chatbot AI được định tuyến tại `server/src/routes/chatbot.routes.js` và điều khiển luồng bởi `server/src/controller/chatbot.controller.js`.
+- Ứng dụng frontend tương tác với máy chủ thông qua cổng kết nối API `POST /api/chatbot/chat` định nghĩa tại tệp cấu hình `client/src/config/ChatbotRequest.js`.
+- Máy chủ thực hiện nhận diện người dùng qua chuỗi token JWT nếu đã đăng nhập hệ thống, hoặc tự động cấp phát mã phiên định danh `sessionId` cục bộ lưu tại bộ nhớ trình duyệt nếu là khách vãng lai.
+- Nhật ký hội thoại của phiên làm việc được lưu giữ tại collection `chat_histories` thông qua mô hình cấu trúc dữ liệu `server/src/models/chatHistory.model.js`.
+- Logic cốt lõi của Chatbot vận hành tại `server/src/services/chatbot.service.js` với cấu trúc 3 hàm nghiệp vụ chính:
+  - Hàm `buildMovieContext()` đảm nhận truy vấn danh mục phim đang chiếu, sắp chiếu thực tế từ database MongoDB nhằm liên tục cập nhật ngữ cảnh chính xác cho AI.
+  - Hàm `chat()` thiết lập kịch bản nền `systemPrompt` cố định đóng vai trò là một giao dịch viên chuyên nghiệp của rạp chiếu phim **SUN CINEMA**, kết hợp nhúng ngữ cảnh phim để gọi trực tiếp dịch vụ xử lý ngôn ngữ Groq AI thông qua thư viện `groq-sdk`.
+  - Hàm `chatWithHistory()` thực hiện trích xuất tối đa 10 luồng tin nhắn hội thoại gần nhất trong lịch sử nạp vào request gửi đi, giúp trợ lý ảo ghi nhớ mạch câu chuyện và đưa ra phản hồi thông minh, liền mạch.
+- Cơ chế vận hành của Chatbot dựa trên kiến trúc RAG (Retrieval-Augmented Generation) thay vì tự học sâu trực tiếp làm thay đổi trọng số mô hình:
+  - Ứng dụng mô hình ngôn ngữ lớn từ bên thứ ba (Groq AI) đã được tối ưu hóa năng lực xử lý ngôn ngữ tự nhiên.
+  - Tại mỗi request, hệ thống thực hiện truy vấn cơ sở dữ liệu thời gian thực để tạo gói ngữ cảnh dữ liệu phim và lịch sử trò chuyện đi kèm.
+  - Mọi câu hỏi gửi lên cổng API Groq sẽ sinh ra câu trả lời được kiểm soát chặt chẽ trong phạm vi prompt thiết lập và dữ liệu thực tế tại rạp.
+- Ngoài ra, service còn được tích hợp module xử lý ngôn ngữ chuyên biệt hỗ trợ quét và tóm tắt nhanh hàng loạt bình luận phim theo yêu cầu, hỗ trợ đắc lực cho quản trị viên theo dõi thị hiếu khách hàng.
 
-
-
-## 6. Cách chạy nhanh
-1. Vào thư mục `server/`, cài dependencies và chạy `npm run dev`.
-2. Vào thư mục `client/`, cài dependencies và chạy `npm run dev`.
-3. Đảm bảo `CONNECT_DB` trỏ đến MongoDB và `URL_CLIENT` trỏ đến địa chỉ client.
-
----
+## 6. Hướng dẫn triển khai nhanh
+1. Di chuyển vào thư mục dự án backend: `cd server/`, tiến hành cài đặt toàn bộ thư viện bằng lệnh `npm install`, sau đó khởi chạy ứng dụng bằng lệnh `npm run dev`.
+2. Di chuyển vào thư mục dự án frontend: `cd client/`, tiến hành cài đặt toàn bộ thư viện bằng lệnh `npm install`, sau đó khởi chạy môi trường local bằng lệnh `npm run dev`.
+3. Lưu ý cấu hình đầy đủ tệp biến môi trường `.env`, đảm bảo biến `CONNECT_DB` trỏ chính xác tới máy chủ cơ sở dữ liệu MongoDB và biến `URL_CLIENT` trỏ đúng địa chỉ máy ảo client để tránh lỗi chặn chia sẻ tài nguyên (CORS).
