@@ -5,6 +5,7 @@ import { requestGetMyGifts } from '@/config/GiftRequest';
 import { Ticket, Star, Clock, Film, Gift, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { getMediaUrl } from '@/utils/media';
 
 export default function UserDashboardPage() {
     const { dataUser } = useStore();
@@ -57,7 +58,7 @@ export default function UserDashboardPage() {
                 <div className="absolute top-0 right-0 w-64 h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
                 <div className="relative z-10">
                     <h1 className="text-3xl font-black text-white mb-2">Xin chào, {dataUser.fullName}! 👋</h1>
-                    <p className="text-white/80">Chào mừng bạn quay lại với TT CINEMA. Cùng khám phá những siêu phẩm điện ảnh mới nhất.</p>
+                    <p className="text-white/80">Chào mừng bạn quay lại với SUN CINEMA. Cùng khám phá những siêu phẩm điện ảnh mới nhất.</p>
                 </div>
             </div>
 
@@ -112,7 +113,7 @@ export default function UserDashboardPage() {
                         {stats.recentMovies.map(movie => (
                             <Link key={movie._id} to={`/phim/${movie.slug}`} className="group relative rounded-xl overflow-hidden aspect-[2/3] block">
                                 <img 
-                                    src={`${import.meta.env.VITE_API_URL}${movie.posterUrl}`} 
+                                    src={getMediaUrl(movie.posterUrl)} 
                                     alt={movie.title}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />

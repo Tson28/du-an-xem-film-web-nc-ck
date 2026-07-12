@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { User, Ticket, LogOut, LayoutDashboard, Menu, MessageCircle } from 'lucide-react';
 import { useStore } from '@/hooks/useStore';
 import { requestLogout } from '@/config/UserRequest';
+import { getMediaUrl } from '@/utils/media';
 import Cookies from 'js-cookie';
 
 const SIDEBAR_LINKS = [
@@ -51,7 +52,7 @@ export default function UserLayout() {
                 <div className="p-6 border-b border-white/5 flex flex-col items-center text-center">
                     <div className="w-20 h-20 rounded-full bg-[#E50914] flex items-center justify-center overflow-hidden mb-3 border-4 border-white/10 shadow-[0_0_15px_rgba(229,9,20,0.3)]">
                         {dataUser.avatar ? (
-                            <img src={dataUser.avatar.startsWith('http') ? dataUser.avatar : `${import.meta.env.VITE_API_URL}${dataUser.avatar}`} alt="avatar" className="w-full h-full object-cover" />
+                            <img src={getMediaUrl(dataUser.avatar)} alt="avatar" className="w-full h-full object-cover" />
                         ) : (
                             <span className="text-2xl font-bold text-white uppercase">{dataUser.fullName?.charAt(0)}</span>
                         )}

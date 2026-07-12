@@ -53,7 +53,7 @@ export default function LoginPage() {
             <div className="relative z-10 w-full max-w-md p-8 glass-card animate-fade-up mt-16">
                 <div className="text-center mb-8">
                     <h2 className="text-3xl font-black tracking-tight text-white mb-2">Đăng Nhập</h2>
-                    <p className="text-sm text-gray-400">Chào mừng bạn quay lại với hệ thống TT CINEMA</p>
+                    <p className="text-sm text-gray-400">Chào mừng bạn quay lại với hệ thống SUN CINEMA</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">

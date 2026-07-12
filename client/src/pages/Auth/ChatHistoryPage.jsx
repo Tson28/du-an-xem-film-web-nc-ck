@@ -150,7 +150,7 @@ export default function ChatHistoryPage() {
                     <MessageCircle size={22} style={{ color: '#E50914' }} />
                     Lịch Sử Trò Chuyện AI
                 </h1>
-                <p className="text-gray-500 text-sm mt-1">Xem lại các cuộc hội thoại với trợ lý AI TT CINEMA</p>
+                <p className="text-gray-500 text-sm mt-1">Xem lại các cuộc hội thoại với trợ lý AI SUN CINEMA</p>
             </div>
 
             {/* Layout 2 cột */}

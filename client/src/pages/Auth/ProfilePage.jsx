@@ -4,6 +4,7 @@ import { requestUpdateUser, requestUploadAvatar, requestChangePassword } from '@
 import { User, Mail, Phone, MapPin, Camera, Save, Loader2, Key, Crown } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Input, Button, Spin } from 'antd';
+import { getMediaUrl } from '@/utils/media';
 
 export default function ProfilePage() {
     const { dataUser, setDataUser } = useStore();
@@ -127,11 +128,7 @@ export default function ProfilePage() {
                             <div className="relative w-32 h-32 rounded-full border-4 border-white/10 overflow-hidden bg-[#1a1a1a] mb-4 group">
                                 {dataUser.avatar ? (
                                     <img
-                                        src={
-                                            dataUser.avatar.startsWith('http')
-                                                ? dataUser.avatar
-                                                : `${import.meta.env.VITE_API_URL}${dataUser.avatar}`
-                                        }
+                                        src={getMediaUrl(dataUser.avatar)}
                                         alt="Avatar"
                                         className="w-full h-full object-cover"
                                     />
