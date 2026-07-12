@@ -12,7 +12,7 @@ const PrintableTicket = React.forwardRef(({ booking }, ref) => {
             {booking && (
                 <>
                     <div className="text-center mb-4 border-b-2 border-black pb-2 border-dashed">
-                        <h1 className="text-2xl font-black tracking-tight m-0">TT Cinema</h1>
+                        <h1 className="text-2xl font-black tracking-tight m-0">SUN Cinema</h1>
                         <p className="text-xs m-0 font-bold uppercase">
                             {booking?.showtimeId?.roomId?.cinemaId?.name || 'Cinema'}
                         </p>

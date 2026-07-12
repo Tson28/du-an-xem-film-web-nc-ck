@@ -9,6 +9,7 @@ import QRCode from 'react-qr-code';
 import { QRCodeCanvas } from 'qrcode.react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { getMediaUrl } from '@/utils/media';
 
 const statusConfig = {
     Paid: { label: 'Đã thanh toán', color: 'success' },
@@ -112,7 +113,7 @@ export default function MyTicketsPage() {
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`TTCinema-Ticket-${booking._id}.pdf`);
+            pdf.save(`SunCinema-Ticket-${booking._id}.pdf`);
             message.success({ content: 'Tải vé PDF thành công!', key: 'pdf' });
         } catch (error) {
             message.error({ content: 'Lỗi khi tạo PDF', key: 'pdf' });
@@ -171,7 +172,7 @@ export default function MyTicketsPage() {
                                     <div className="w-20 h-28 shrink-0 rounded-lg overflow-hidden bg-[#1a1a1a]">
                                         {movie?.posterUrl ? (
                                             <img
-                                                src={`${import.meta.env.VITE_API_URL}${movie.posterUrl}`}
+                                                src={getMediaUrl(movie.posterUrl)}
                                                 alt={movie.title}
                                                 className="w-full h-full object-cover"
                                             />
@@ -328,7 +329,7 @@ export default function MyTicketsPage() {
                                                             fontWeight: '900',
                                                         }}
                                                     >
-                                                        TT Cinema
+                                                        SUN Cinema
                                                     </h1>
                                                     <p style={{ color: '#666', margin: '5px 0 0 0', fontSize: '14px' }}>
                                                         Vé điện tử / E-Ticket
@@ -430,11 +431,7 @@ export default function MyTicketsPage() {
                                                 </div>
                                                 {movie?.posterUrl && (
                                                     <img
-                                                        src={
-                                                            movie.posterUrl.startsWith('http')
-                                                                ? movie.posterUrl
-                                                                : `${import.meta.env.VITE_API_URL}${movie.posterUrl}`
-                                                        }
+                                                        src={getMediaUrl(movie.posterUrl)}
                                                         alt="poster"
                                                         style={{
                                                             width: '150px',

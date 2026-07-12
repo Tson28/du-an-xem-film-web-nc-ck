@@ -8,6 +8,7 @@ import { requestGetBookingById } from '@/config/BookingRequest';
 import { requestCreateReview, requestGetMyReviews } from '@/config/ReviewRequest';
 import dayjs from 'dayjs';
 import QRCode from 'react-qr-code';
+import { getMediaUrl } from '@/utils/media';
 
 export default function BookingResultPage() {
     const [searchParams] = useSearchParams();
@@ -259,7 +260,7 @@ export default function BookingResultPage() {
                     <p className="text-gray-400 mt-2">
                         {isPending
                             ? 'Đơn đặt vé chưa được thanh toán. Vui lòng hoàn tất thanh toán để nhận vé.'
-                            : 'Cảm ơn bạn đã sử dụng TT CINEMA'}
+                            : 'Cảm ơn bạn đã sử dụng SUN CINEMA'}
                     </p>
                     {booking?._id && (
                         <div className="mt-3 inline-block bg-[#1a1a1a] px-4 py-1.5 rounded-full border border-white/10">
@@ -277,7 +278,7 @@ export default function BookingResultPage() {
                     <div className="flex gap-4 p-6 bg-gradient-to-r from-[#1a1a1a] to-[#111111] border-b border-white/5">
                         {movie?.posterUrl && (
                             <img
-                                src={`${import.meta.env.VITE_API_URL}${movie.posterUrl}`}
+                                src={getMediaUrl(movie.posterUrl)}
                                 alt={movie?.title}
                                 className="w-20 h-28 object-cover rounded-lg shrink-0 shadow-lg"
                             />
@@ -288,7 +289,7 @@ export default function BookingResultPage() {
                                 Vé Xem Phim
                             </div>
                             <h2 className="text-2xl font-black text-white leading-tight">
-                                {movie?.title || 'TT CINEMA'}
+                                {movie?.title || 'SUN CINEMA'}
                             </h2>
                             {cinema && (
                                 <div className="flex items-center gap-1.5 mt-2 text-gray-400 text-sm">

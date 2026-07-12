@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import SeatSelection from './components/SeatSelection';
 import { useBookingSocket } from '@/hooks/useBookingSocket';
 import { useStore } from '@/hooks/useStore';
+import { getMediaUrl } from '@/utils/media';
 
 export default function BookingPage() {
     const { showtimeId } = useParams();
@@ -294,7 +295,7 @@ export default function BookingPage() {
                                 <div className="w-24 h-24 rounded-md overflow-hidden bg-black shrink-0">
                                     {service.imageUrl ? (
                                         <img
-                                            src={`${import.meta.env.VITE_API_URL}${service.imageUrl}`}
+                                            src={getMediaUrl(service.imageUrl)}
                                             alt={service.name}
                                             className="w-full h-full object-cover"
                                         />
