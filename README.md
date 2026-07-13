@@ -43,6 +43,7 @@ Hệ thống được thiết kế theo sơ đồ kiến trúc chuẩn sau:
 - `/api/cinemas` - Quản lý hệ thống rạp chiếu.
 - `/api/rooms` - Quản lý phòng chiếu phim.
 - `/api/showtimes` - Quản lý các suất chiếu.
+
 - `/api/services` - Quản lý dịch vụ ăn uống, bắp nước và các gói combo đi kèm.
 - `/api/bookings` - Quy trình đặt vé, giữ ghế và quản lý đơn hàng.
 - `/api/vouchers` - Quản lý mã giảm giá, voucher khuyến mãi.
